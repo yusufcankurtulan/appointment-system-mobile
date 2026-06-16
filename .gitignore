@@ -1,0 +1,50 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Flutter / Dart
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+pubspec.lock
+
+# Flutter generated duplicate files
+* 2.xcconfig
+* 2.sh
+* 2
+android.bak/
+
+# Android
+android/.gradle/
+android/app/build/
+android/local.properties
+android/*.iml
+
+# iOS
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.framework
+ios/Flutter/engine/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+
+# Node
+node_modules/
+backend/node_modules/
+admin_dashboard/node_modules/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Misc
+*.lock

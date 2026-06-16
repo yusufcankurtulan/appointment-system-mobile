@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+yarn-error.log
+dist
+build
+.env
+.DS_Store
+/.idea
+.vscode
+prisma/migrations
+prisma/dev.db
+/.git
+node_modules/**
+**/.prisma/**
