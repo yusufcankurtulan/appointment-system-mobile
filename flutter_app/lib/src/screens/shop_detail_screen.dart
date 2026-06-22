@@ -56,9 +56,8 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
     final shop = results[0] as ShopModel;
     final chairsJson = results[1] as List<Map<String, dynamic>>;
 
-    final fetchedExperts = chairsJson
-        .map(ChairModel.fromJson)
-        .toList(growable: false);
+    final fetchedExperts =
+        chairsJson.map(ChairModel.fromJson).toList(growable: false);
 
     final experts = fetchedExperts.isNotEmpty ? fetchedExperts : shop.chairs;
 
@@ -329,7 +328,7 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
             Text(
               '4.8',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -388,7 +387,8 @@ class _ErrorCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.storefront_outlined, size: 56, color: Colors.white70),
+          const Icon(Icons.storefront_outlined,
+              size: 56, color: Colors.white70),
           const SizedBox(height: 18),
           const Text(
             'İşletme yüklenemedi',

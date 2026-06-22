@@ -10,9 +10,9 @@ class AppColors {
   static const imagePlaceholder = Color(0xFF111827);
   static const open = Colors.green;
 
-  static Color get cardFill => Colors.white.withOpacity(0.04);
-  static Color get cardFillElevated => Colors.white.withOpacity(0.05);
-  static Color get cardStroke => Colors.white.withOpacity(0.08);
-  static Color get textSecondary => Colors.white.withOpacity(0.65);
-  static Color get textMuted => Colors.white.withOpacity(0.54);
+  static Color get cardFill => Colors.white.withValues(alpha: 0.04);
+  static Color get cardFillElevated => Colors.white.withValues(alpha: 0.05);
+  static Color get cardStroke => Colors.white.withValues(alpha: 0.08);
+  static Color get textSecondary => Colors.white.withValues(alpha: 0.65);
+  static Color get textMuted => Colors.white.withValues(alpha: 0.54);
 }

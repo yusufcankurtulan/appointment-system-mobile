@@ -60,12 +60,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     required bool isFocused,
     Widget? suffix,
   }) {
-    final Color borderColor = isFocused ? AppColors.accent : Colors.white.withOpacity(0.12);
-    final Color fillColor = isFocused ? Colors.white.withOpacity(0.06) : Colors.white.withOpacity(0.04);
+    final Color borderColor =
+        isFocused ? AppColors.accent : Colors.white.withValues(alpha: 0.12);
+    final Color fillColor = isFocused
+        ? Colors.white.withValues(alpha: 0.06)
+        : Colors.white.withValues(alpha: 0.04);
 
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: Colors.white.withOpacity(0.92)),
+      prefixIcon: Icon(icon, color: Colors.white.withValues(alpha: 0.92)),
       suffixIcon: suffix,
       filled: true,
       fillColor: fillColor,
@@ -75,7 +78,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       enabledBorder: _buildBorder(borderColor),
       focusedBorder: _buildBorder(AppColors.accentLight),
       labelStyle: TextStyle(
-        color: isFocused ? AppColors.accentLight : Colors.white.withOpacity(0.65),
+        color: isFocused
+            ? AppColors.accentLight
+            : Colors.white.withValues(alpha: 0.65),
         fontWeight: FontWeight.w600,
       ),
     );
@@ -100,10 +105,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 12),
-                      Text(
+                      const Text(
                         'Tekrar Hoş Geldin',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.w800,
@@ -115,7 +120,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         'Randevularını yönetmek ve işletmeleri keşfetmek için giriş yap.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.65),
+                          color: Colors.white.withValues(alpha: 0.65),
                           fontSize: 14,
                           height: 1.5,
                         ),
@@ -133,9 +138,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               keyboardType: TextInputType.emailAddress,
                               style: const TextStyle(color: Colors.white),
                               validator: (v) {
-                                if (v == null || v.trim().isEmpty) return 'Lütfen email gir.';
-                                final emailReg = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-                                return emailReg.hasMatch(v.trim()) ? null : 'Geçerli bir email gir.';
+                                if (v == null || v.trim().isEmpty)
+                                  return 'Lütfen email gir.';
+                                final emailReg =
+                                    RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                                return emailReg.hasMatch(v.trim())
+                                    ? null
+                                    : 'Geçerli bir email gir.';
                               },
                               decoration: _fieldDecoration(
                                 label: 'E-posta',
@@ -151,7 +160,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               obscureText: _obscure,
                               style: const TextStyle(color: Colors.white),
                               validator: (v) {
-                                if (v == null || v.isEmpty) return 'Lütfen şifre gir.';
+                                if (v == null || v.isEmpty)
+                                  return 'Lütfen şifre gir.';
                                 return null;
                               },
                               decoration: _fieldDecoration(
@@ -163,8 +173,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     setState(() => _obscure = !_obscure);
                                   },
                                   icon: Icon(
-                                    _obscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                                    color: Colors.white.withOpacity(0.85),
+                                    _obscure
+                                        ? Icons.visibility_off_rounded
+                                        : Icons.visibility_rounded,
+                                    color: Colors.white.withValues(alpha: 0.85),
                                   ),
                                 ),
                               ),
@@ -186,7 +198,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   borderRadius: BorderRadius.circular(18),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors.accent.withOpacity(0.28),
+                                      color: AppColors.accent
+                                          .withValues(alpha: 0.28),
                                       blurRadius: 18,
                                       offset: const Offset(0, 10),
                                     ),
@@ -196,7 +209,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   onPressed: auth.loading
                                       ? null
                                       : () async {
-                                          if (!_formKey.currentState!.validate()) return;
+                                          if (!_formKey.currentState!
+                                              .validate()) return;
                                           try {
                                             await ref
                                                 .read(authProvider.notifier)
@@ -204,11 +218,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                                   _emailCtrl.text.trim(),
                                                   _passCtrl.text.trim(),
                                                 );
-                                            if (mounted) context.go('/home');
+                                            if (!mounted) return;
+                                            context.go('/home');
                                           } catch (e) {
                                             if (!mounted) return;
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(content: Text('Giriş başarısız: $e')),
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Giriş başarısız: $e')),
                                             );
                                           }
                                         },
@@ -227,7 +245,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           height: 22,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 2.2,
-                                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
                                           ),
                                         )
                                       : const Text(
@@ -247,7 +267,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 Text(
                                   'Hesabın yok mu?',
                                   style: TextStyle(
-                                    color: Colors.white.withOpacity(0.7),
+                                    color: Colors.white.withValues(alpha: 0.7),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -260,7 +280,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                   child: const Text(
                                     'Kayıt Ol',
-                                    style: TextStyle(fontWeight: FontWeight.w800),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w800),
                                   ),
                                 ),
                               ],
@@ -279,5 +300,3 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
-
-

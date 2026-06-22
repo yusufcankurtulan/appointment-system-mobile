@@ -58,7 +58,8 @@ class AppointmentsScreen extends ConsumerWidget {
                         );
                       },
                       loading: () => const Center(
-                        child: CircularProgressIndicator(color: AppColors.accent),
+                        child:
+                            CircularProgressIndicator(color: AppColors.accent),
                       ),
                       error: (error, _) => ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
@@ -66,7 +67,8 @@ class AppointmentsScreen extends ConsumerWidget {
                           SizedBox(
                             height: MediaQuery.sizeOf(context).height * 0.5,
                             child: _buildErrorState(
-                              onRetry: () => ref.invalidate(myAppointmentsProvider),
+                              onRetry: () =>
+                                  ref.invalidate(myAppointmentsProvider),
                             ),
                           ),
                         ],
@@ -156,7 +158,8 @@ class AppointmentsScreen extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.wifi_off_rounded, size: 56, color: Colors.white70),
+              const Icon(Icons.wifi_off_rounded,
+                  size: 56, color: Colors.white70),
               const SizedBox(height: 18),
               const Text(
                 'Randevular yüklenemedi',

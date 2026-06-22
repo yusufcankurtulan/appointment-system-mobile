@@ -26,7 +26,17 @@ class ShopModel {
   final List<ShopImageModel> images;
   final List<ChairModel> chairs;
 
-  ShopModel({required this.id, required this.name, this.description, this.city, this.district, this.address, this.distanceKm, required this.images, required this.chairs,});
+  ShopModel({
+    required this.id,
+    required this.name,
+    this.description,
+    this.city,
+    this.district,
+    this.address,
+    this.distanceKm,
+    required this.images,
+    required this.chairs,
+  });
 
   factory ShopModel.fromJson(Map<String, dynamic> json) => ShopModel(
         id: json['id']?.toString() ?? '',
@@ -35,11 +45,17 @@ class ShopModel {
         city: json['city'] as String?,
         district: json['district'] as String?,
         address: json['address'] as String?,
-        distanceKm: json['distanceKm'] != null ? (json['distanceKm'] as num).toDouble() : null,
-        images: (json['images'] as List<dynamic>?)?.map((e) => ShopImageModel.fromJson(e as Map<String, dynamic>)).toList() ?? [],
+        distanceKm: json['distanceKm'] != null
+            ? (json['distanceKm'] as num).toDouble()
+            : null,
+        images: (json['images'] as List<dynamic>?)
+                ?.map((e) => ShopImageModel.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            [],
         chairs: (json['chairs'] as List<dynamic>?)
-        ?.map((e) => ChairModel.fromJson(e))
-        .toList() ?? [],
+                ?.map((e) => ChairModel.fromJson(e))
+                .toList() ??
+            [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,7 +66,9 @@ class ShopModel {
         'district': district,
         'address': address,
         'distanceKm': distanceKm,
-        'images': images.map((i) => {'id': i.id, 'url': i.url, 'alt': i.alt}).toList(),
+        'images': images
+            .map((i) => {'id': i.id, 'url': i.url, 'alt': i.alt})
+            .toList(),
         'chairs': chairs.map((e) => e.toJson()).toList(),
       };
 

@@ -15,10 +15,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class PushService {
   static final _messaging = FirebaseMessaging.instance;
   static final _storage = SecureStorage();
-  static final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
 
   // Android channel for foreground notifications
-  static const AndroidNotificationChannel _androidChannel = AndroidNotificationChannel(
+  static const AndroidNotificationChannel _androidChannel =
+      AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
     description: 'This channel is used for important notifications.',
@@ -29,14 +31,16 @@ class PushService {
     // Initialize local notifications
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     final iosInit = DarwinInitializationSettings();
-    final initSettings = InitializationSettings(android: androidInit, iOS: iosInit);
+    final initSettings =
+        InitializationSettings(android: androidInit, iOS: iosInit);
     await _localNotifications.initialize(settings: initSettings);
 
     // Create Android notification channel
     try {
-      await _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-          ?.
-          createNotificationChannel(_androidChannel);
+      await _localNotifications
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(_androidChannel);
     } catch (e) {
       debugPrint('Failed creating notification channel: $e');
     }
@@ -57,11 +61,13 @@ class PushService {
         final access = await _storage.readAccessToken();
         if (access != null) {
           // attach token header temporarily
-          await dio.post('/notifications/register', data: {'token': token, 'platform': Platform.operatingSystem},
+          await dio.post('/notifications/register',
+              data: {'token': token, 'platform': Platform.operatingSystem},
               options: Options(headers: {'Authorization': 'Bearer $access'}));
         } else {
           // attempt unauthenticated register (if backend allows)
-          await dio.post('/notifications/register', data: {'token': token, 'platform': Platform.operatingSystem});
+          await dio.post('/notifications/register',
+              data: {'token': token, 'platform': Platform.operatingSystem});
         }
       } catch (err) {
         debugPrint('Failed to register device token: $err');
@@ -70,7 +76,8 @@ class PushService {
 
     // foreground message handler
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('Foreground message: ${message.notification?.title} - ${message.notification?.body}');
+      debugPrint(
+          'Foreground message: ${message.notification?.title} - ${message.notification?.body}');
       // Show a local notification for foreground messages
       try {
         final title = message.notification?.title ?? '';
@@ -82,7 +89,10 @@ class PushService {
     });
   }
 
-  static Future<void> _showLocalNotification({required String title, required String body, Map<String, dynamic>? data}) async {
+  static Future<void> _showLocalNotification(
+      {required String title,
+      required String body,
+      Map<String, dynamic>? data}) async {
     final androidDetails = AndroidNotificationDetails(
       _androidChannel.id,
       _androidChannel.name,
@@ -92,7 +102,8 @@ class PushService {
       ticker: 'ticker',
     );
     final iosDetails = DarwinNotificationDetails();
-    final details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+    final details =
+        NotificationDetails(android: androidDetails, iOS: iosDetails);
 
     await _localNotifications.show(
       id: title.hashCode ^ body.hashCode,

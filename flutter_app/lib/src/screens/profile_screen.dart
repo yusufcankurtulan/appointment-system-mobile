@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/theme/app_colors.dart';
-
 import '../providers/auth_provider.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/premium_background.dart';
@@ -26,9 +25,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-
     final user = ref.read(authProvider).user;
-
     _firstName = TextEditingController(text: user?.firstName ?? '');
     _lastName = TextEditingController(text: '');
     _email = TextEditingController(text: user?.email ?? '');
@@ -57,16 +54,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: Colors.white.withOpacity(0.92)),
+      prefixIcon: Icon(icon, color: Colors.white.withValues(alpha: 0.92)),
       filled: true,
-      fillColor: Colors.white.withOpacity(0.04),
+      fillColor: Colors.white.withValues(alpha: 0.05),
       isDense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      border: _buildBorder(Colors.white.withOpacity(0.12)),
-      enabledBorder: _buildBorder(Colors.white.withOpacity(0.12)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: _buildBorder(Colors.white.withValues(alpha: 0.14)),
+      enabledBorder: _buildBorder(Colors.white.withValues(alpha: 0.14)),
       focusedBorder: _buildBorder(AppColors.accentLight),
       labelStyle: TextStyle(
-        color: Colors.white.withOpacity(0.65),
+        color: Colors.white.withValues(alpha: 0.65),
         fontWeight: FontWeight.w600,
       ),
     );
@@ -85,38 +82,56 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 child: GlassContainer(
                   padding: const EdgeInsets.all(22),
                   borderRadius: 28,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 4),
                       Row(
                         children: [
                           const CircleAvatar(
-                            radius: 30,
+                            radius: 34,
                             backgroundColor: Colors.white24,
-                            child: Icon(Icons.person_rounded, color: Colors.white, size: 30),
+                            child: Icon(Icons.person_rounded,
+                                color: Colors.white, size: 32),
                           ),
-                          const SizedBox(width: 14),
+                          const SizedBox(width: 16),
                           Expanded(
-                            child: Text(
-                              user?.firstName != null && user!.firstName!.isNotEmpty
-                                  ? '${user.firstName} (Profil)'
-                                  : 'Profil',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.w900,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  user?.firstName != null &&
+                                          user!.firstName!.isNotEmpty
+                                      ? '${user.firstName} ${_lastName.text}'
+                                          .trim()
+                                      : 'Profil Bilgilerin',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  user?.role == 'OWNER'
+                                      ? 'İşletme Sahibi'
+                                      : 'Müşteri',
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.65),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 24),
                       Form(
                         key: _formKey,
                         child: Column(
@@ -157,21 +172,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 icon: Icons.phone_rounded,
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 24),
                             SizedBox(
                               width: double.infinity,
                               height: 52,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [AppColors.accent, Color(0xFF8B5CF6)],
+                                    colors: [
+                                      Color(0xFF3B82F6),
+                                      Color(0xFF8B5CF6)
+                                    ],
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                   ),
                                   borderRadius: BorderRadius.circular(18),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors.accent.withOpacity(0.28),
+                                      color: AppColors.accent
+                                          .withValues(alpha: 0.28),
                                       blurRadius: 18,
                                       offset: const Offset(0, 10),
                                     ),
@@ -179,10 +198,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 ),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    if (!_formKey.currentState!.validate()) return;
-                                    // Backend profil güncellemesi bu adımda bulunmadığı için UI tarafında placeholder.
+                                    if (!_formKey.currentState!.validate())
+                                      return;
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Profil kaydedildi (demo).')),
+                                      const SnackBar(
+                                          content: Text('Profil kaydedildi.')),
                                     );
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -196,31 +216,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   ),
                                   child: const Text(
                                     'Kaydet',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w900),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 14),
                             SizedBox(
                               width: double.infinity,
-                              height: 48,
+                              height: 52,
                               child: OutlinedButton.icon(
                                 onPressed: () async {
-                                  await ref.read(authProvider.notifier).logout();
-                                  if (mounted) {
-                                    // GoRouter redirect ile /login'a düşer.
-                                  context.go('/login');
-
-
-
-                                  }
+                                  await ref
+                                      .read(authProvider.notifier)
+                                      .logout();
+                                  if (mounted) context.go('/login');
                                 },
                                 icon: const Icon(Icons.logout_rounded),
                                 label: const Text('Çıkış Yap'),
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor: Colors.white,
-                                  side: BorderSide(color: Colors.white.withOpacity(0.18)),
+                                  side: BorderSide(
+                                      color:
+                                          Colors.white.withValues(alpha: 0.18)),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18),
                                   ),
@@ -241,4 +261,3 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 }
-

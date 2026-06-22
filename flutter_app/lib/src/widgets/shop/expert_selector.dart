@@ -80,12 +80,12 @@ class _ExpertCard extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.accent.withOpacity(0.15)
+              ? AppColors.accent.withValues(alpha: 0.15)
               : AppColors.cardFill,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
-                ? AppColors.accent.withOpacity(0.55)
+                ? AppColors.accent.withValues(alpha: 0.55)
                 : AppColors.cardStroke,
             width: isSelected ? 1.5 : 1,
           ),
@@ -97,10 +97,10 @@ class _ExpertCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: AppColors.accent.withOpacity(0.15),
+                color: AppColors.accent.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppColors.accent.withOpacity(0.35),
+                  color: AppColors.accent.withValues(alpha: 0.35),
                 ),
               ),
               child: const Icon(

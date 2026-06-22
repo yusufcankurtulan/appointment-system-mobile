@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,7 +12,8 @@ class LocationPermissionScreen extends ConsumerStatefulWidget {
   const LocationPermissionScreen({super.key});
 
   @override
-  ConsumerState<LocationPermissionScreen> createState() => _LocationPermissionScreenState();
+  ConsumerState<LocationPermissionScreen> createState() =>
+      _LocationPermissionScreenState();
 }
 
 class _LocationPermissionScreenState
@@ -41,7 +40,7 @@ class _LocationPermissionScreenState
                       _buildTopIcon(),
                       const SizedBox(height: 18),
                       const Text(
-                        'Yakınındaki İşletmeleri Keşfet',
+                        'Yakınınızdaki işletmeleri gösterebilmemiz için konumunuza ihtiyacımız var.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
@@ -52,10 +51,10 @@ class _LocationPermissionScreenState
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Sana en yakın işletmeleri gösterebilmemiz ve daha iyi bir deneyim sunabilmemiz için konum iznine ihtiyacımız var.',
+                        'Konum bilginiz yalnızca size en uygun işletmeleri listelemek için kullanılacaktır.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.65),
+                          color: Colors.white.withValues(alpha: 0.65),
                           fontSize: 14,
                           height: 1.6,
                         ),
@@ -77,7 +76,7 @@ class _LocationPermissionScreenState
                             borderRadius: BorderRadius.circular(18),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.accent.withOpacity(0.28),
+                                color: AppColors.accent.withValues(alpha: 0.28),
                                 blurRadius: 18,
                                 offset: const Offset(0, 10),
                               ),
@@ -100,12 +99,12 @@ class _LocationPermissionScreenState
                                     height: 22,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.2,
-                                      valueColor:
-                                          AlwaysStoppedAnimation<Color>(Colors.white),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
                                     ),
                                   )
                                 : const Text(
-                                    'Konum İznini Ver',
+                                    'Konum Erişimine İzin Ver',
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w800,
@@ -142,7 +141,7 @@ class _LocationPermissionScreenState
           child: Icon(
             Icons.my_location_rounded,
             size: 74,
-            color: AppColors.accentLight.withOpacity(0.95),
+            color: AppColors.accentLight.withValues(alpha: 0.95),
           ),
         );
       },
@@ -158,7 +157,6 @@ class _LocationPermissionScreenState
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() => _loading = false);
-        // Soft guidance
         await _showInfoDialog(
           title: 'Konum Servisi Kapalı',
           content:
@@ -181,7 +179,6 @@ class _LocationPermissionScreenState
       }
 
       LocationPermission permission = await Geolocator.checkPermission();
-
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }
@@ -196,8 +193,7 @@ class _LocationPermissionScreenState
         setState(() => _loading = false);
         await _showInfoDialog(
           title: 'Konum İzni Gerekli',
-          content:
-              'Yakınındaki işletmeleri gösterebilmemiz için konum iznini vermen gerekiyor.',
+          content: 'Konum izni vermeden uygulamayı kullanamazsınız.',
           actions: [
             TextButton(
               onPressed: () => context.pop(),
@@ -215,23 +211,17 @@ class _LocationPermissionScreenState
         return;
       }
 
-      // Granted: get current position
       await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      );
+          desiredAccuracy: LocationAccuracy.best);
 
-      // Complete register with passed form data
       final firstName = stateExtra['firstName'] ?? '';
       final lastName = stateExtra['lastName'] ?? '';
       final email = stateExtra['email'] ?? '';
       final phone = stateExtra['phone'] ?? '';
       final password = stateExtra['password'] ?? '';
-
       final role = stateExtra['role'] ?? 'CUSTOMER';
 
-      await ref
-          .read(authProvider.notifier)
-          .register(
+      await ref.read(authProvider.notifier).register(
             role: role,
             firstName: firstName,
             lastName: lastName,
@@ -243,8 +233,8 @@ class _LocationPermissionScreenState
             city: stateExtra['city'],
             district: stateExtra['district'],
             address: stateExtra['address'],
+            shopPhone: stateExtra['shopPhone'],
           );
-
 
       if (!mounted) return;
       context.go('/home');
@@ -296,4 +286,3 @@ class _LocationPermissionScreenState
     );
   }
 }
-

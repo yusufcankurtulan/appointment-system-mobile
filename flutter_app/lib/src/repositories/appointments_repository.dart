@@ -24,7 +24,8 @@ class AppointmentsRepository {
       final response = await dio.get('/appointments');
       final data = response.data as List<dynamic>;
       return data
-          .map((item) => AppointmentModel.fromJson(item as Map<String, dynamic>))
+          .map(
+              (item) => AppointmentModel.fromJson(item as Map<String, dynamic>))
           .toList(growable: false);
     } on DioException catch (error) {
       throw ApiException.fromDio(error);

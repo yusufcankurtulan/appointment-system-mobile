@@ -5,6 +5,44 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Demo veriler oluşturuluyor...');
 
+  // Customer kullanıcıları
+  await prisma.user.createMany({
+    data: [
+      {
+        id: 'customer-1',
+        email: 'customer@test.com',
+        password: 'demo',
+        role: Role.CUSTOMER,
+      },
+      {
+        id: 'customer-2',
+        email: 'john@test.com',
+        password: 'demo',
+        role: Role.CUSTOMER,
+      },
+    ],
+    skipDuplicates: true,
+  });
+
+  // Customer profilleri
+  await prisma.customer.createMany({
+    data: [
+      {
+        userId: 'customer-1',
+        firstName: 'Test',
+        lastName: 'Customer',
+        phone: '05001111111',
+      },
+      {
+        userId: 'customer-2',
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: '05001111112',
+      },
+    ],
+    skipDuplicates: true,
+  });
+
   // Owner kullanıcıları
   await prisma.user.createMany({
     data: [

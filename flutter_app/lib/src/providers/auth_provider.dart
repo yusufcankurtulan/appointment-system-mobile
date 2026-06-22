@@ -8,7 +8,8 @@ class AuthState {
 
   AuthState({this.user, this.loading = false});
 
-  AuthState copyWith({UserModel? user, bool? loading}) => AuthState(user: user ?? this.user, loading: loading ?? this.loading);
+  AuthState copyWith({UserModel? user, bool? loading}) =>
+      AuthState(user: user ?? this.user, loading: loading ?? this.loading);
 }
 
 class AuthNotifier extends StateNotifier<AuthState> {
@@ -16,12 +17,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this._repo) : super(AuthState());
 
   Future<void> login(String email, String password) async {
+    print('[AuthProvider] Starting login for: $email');
     state = state.copyWith(loading: true);
     try {
       final data = await _repo.loginCustomer(email, password);
+      print('[AuthProvider] Got response, extracting user');
+      print('[AuthProvider] Data keys: ${data.keys}');
       final user = UserModel.fromJson(data['user']);
+      print('[AuthProvider] User created: ${user.id}');
       state = state.copyWith(user: user, loading: false);
+      print('[AuthProvider] State updated, login complete');
     } catch (e) {
+      print('[AuthProvider] Login error: $e');
       state = state.copyWith(loading: false);
       rethrow;
     }
@@ -39,10 +46,24 @@ class AuthNotifier extends StateNotifier<AuthState> {
     String? city,
     String? district,
     String? address,
+    String? shopPhone,
   }) async {
     state = state.copyWith(loading: true);
     try {
-      final data = await _repo.register(role: role, firstName: firstName, lastName: lastName, email: email, phone: phone, password: password, shopName: shopName, shopDescription: shopDescription, city: city, district: district, address: address);
+      final data = await _repo.register(
+        role: role,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+        shopName: shopName,
+        shopDescription: shopDescription,
+        city: city,
+        district: district,
+        address: address,
+        shopPhone: shopPhone,
+      );
       final user = UserModel.fromJson(data['user']);
       state = state.copyWith(user: user, loading: false);
     } catch (e) {
@@ -51,7 +72,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-
   Future<void> logout() async {
     await _repo.logout();
     state = AuthState();
@@ -59,4 +79,5 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 final authRepositoryProvider = Provider((ref) => AuthRepository());
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) => AuthNotifier(ref.read(authRepositoryProvider)));
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
+    (ref) => AuthNotifier(ref.read(authRepositoryProvider)));

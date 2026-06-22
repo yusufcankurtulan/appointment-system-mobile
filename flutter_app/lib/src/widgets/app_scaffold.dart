@@ -21,45 +21,18 @@ class AppScaffold extends ConsumerWidget {
 
   bool _isOwner(String role) => role.toUpperCase() == 'OWNER';
 
-  BottomNavigationBar _buildBottomBar(BuildContext context, WidgetRef ref, String role) {
+  Widget _navIcon(IconData icon, bool active) {
+    return Icon(
+      icon,
+      size: active ? 28 : 22,
+      color:
+          active ? AppColors.accentLight : Colors.white.withValues(alpha: 0.72),
+    );
+  }
+
+  BottomNavigationBar _buildBottomBar(
+      BuildContext context, WidgetRef ref, String role) {
     final isOwner = _isOwner(role);
-
-    final items = <BottomNavigationBarItem>[
-      if (!isOwner)
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.home_rounded),
-          label: 'Home',
-        ),
-      if (isOwner)
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.home_rounded),
-          label: 'Home',
-        ),
-
-      if (!isOwner)
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.event_note_rounded),
-          label: 'Randevularım',
-        ),
-
-      if (isOwner)
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_active_rounded),
-          label: 'Randevu Talepleri',
-        ),
-
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.person_rounded),
-        label: 'Profil',
-      ),
-
-      if (isOwner)
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.settings_rounded),
-          label: 'Ayarlar',
-        ),
-    ];
-
     final String path = GoRouterState.of(context).uri.path;
 
     int indexForPath() {
@@ -69,8 +42,6 @@ class AppScaffold extends ConsumerWidget {
         if (path == '/profile') return 2;
         return 0;
       }
-
-      // owner
       if (path == '/home') return 0;
       if (path == '/appointment-requests') return 1;
       if (path == '/profile') return 2;
@@ -80,26 +51,48 @@ class AppScaffold extends ConsumerWidget {
 
     final currentIndex = indexForPath();
 
+    final items = <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: _navIcon(Icons.home_rounded, currentIndex == 0),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: _navIcon(
+            isOwner
+                ? Icons.notifications_active_rounded
+                : Icons.event_note_rounded,
+            currentIndex == 1),
+        label: isOwner ? 'Talepler' : 'Randevularım',
+      ),
+      BottomNavigationBarItem(
+        icon: _navIcon(Icons.person_rounded, currentIndex == 2),
+        label: 'Profil',
+      ),
+      if (isOwner)
+        BottomNavigationBarItem(
+          icon: _navIcon(Icons.settings_rounded, currentIndex == 3),
+          label: 'Ayarlar',
+        ),
+    ];
+
     return BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       elevation: 0,
       selectedItemColor: AppColors.accentLight,
-      unselectedItemColor: Colors.white.withOpacity(0.7),
+      unselectedItemColor: Colors.white.withValues(alpha: 0.72),
       showSelectedLabels: false,
       showUnselectedLabels: false,
+      selectedIconTheme: const IconThemeData(size: 28),
+      unselectedIconTheme: const IconThemeData(size: 22),
       onTap: (i) {
         switch (i) {
           case 0:
             context.go('/home');
             break;
           case 1:
-            if (isOwner) {
-              context.go('/appointment-requests');
-            } else {
-              context.go('/appointments');
-            }
+            context.go(isOwner ? '/appointment-requests' : '/appointments');
             break;
           case 2:
             context.go('/profile');
@@ -121,20 +114,30 @@ class AppScaffold extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(child: child),
-      bottomNavigationBar: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.35),
-              border: Border(top: BorderSide(color: Colors.white.withOpacity(0.06))),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.24),
+                borderRadius: BorderRadius.circular(32),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.22),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: _buildBottomBar(context, ref, role),
             ),
-            padding: const EdgeInsets.only(top: 6, bottom: 10),
-            child: _buildBottomBar(context, ref, role),
           ),
         ),
       ),
     );
   }
 }
-

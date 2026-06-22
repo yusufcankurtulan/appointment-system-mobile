@@ -14,9 +14,6 @@ import 'screens/settings_screen.dart';
 import 'screens/owner_appointment_requests_screen.dart';
 import 'models/shop.dart';
 
-
-
-
 final routerProvider = Provider((ref) {
   final auth = ref.watch(authProvider);
 
@@ -24,16 +21,18 @@ final routerProvider = Provider((ref) {
     initialLocation: auth.user == null ? '/login' : '/home',
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
+      GoRoute(
+          path: '/register',
+          builder: (context, state) => const RegisterScreen()),
       GoRoute(
         path: '/location-permission',
         builder: (context, state) => const LocationPermissionScreen(),
       ),
       GoRoute(
         path: '/home',
-        builder: (context, state) => AppScaffold(title: 'Home', child: const HomeScreen()),
+        builder: (context, state) =>
+            const AppScaffold(title: 'Home', child: HomeScreen()),
       ),
-
       GoRoute(
         path: '/shop',
         builder: (context, state) {
@@ -43,28 +42,26 @@ final routerProvider = Provider((ref) {
       ),
       GoRoute(
         path: '/appointments',
-        builder: (context, state) =>
-            AppScaffold(title: 'Randevularım', child: const AppointmentsScreen()),
+        builder: (context, state) => const AppScaffold(
+            title: 'Randevularım', child: AppointmentsScreen()),
       ),
       GoRoute(
         path: '/appointment-requests',
-        builder: (context, state) => AppScaffold(
+        builder: (context, state) => const AppScaffold(
           title: 'Randevu Talepleri',
-          child: const OwnerAppointmentRequestsScreen(),
+          child: OwnerAppointmentRequestsScreen(),
         ),
       ),
       GoRoute(
         path: '/profile',
         builder: (context, state) =>
-            AppScaffold(title: 'Profil', child: const ProfileScreen()),
+            const AppScaffold(title: 'Profil', child: ProfileScreen()),
       ),
       GoRoute(
         path: '/settings',
         builder: (context, state) =>
-            AppScaffold(title: 'Ayarlar', child: const SettingsScreen()),
+            const AppScaffold(title: 'Ayarlar', child: SettingsScreen()),
       ),
-
-
     ],
     redirect: (context, state) {
       final loggedIn = auth.user != null;

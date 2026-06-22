@@ -22,7 +22,7 @@ class BottomBookingBar extends StatelessWidget {
         MediaQuery.paddingOf(context).bottom + 12,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background.withOpacity(0.95),
+        color: AppColors.background.withValues(alpha: 0.95),
         border: Border(top: BorderSide(color: AppColors.cardStroke)),
       ),
       child: SizedBox(
@@ -33,7 +33,7 @@ class BottomBookingBar extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.accent,
             foregroundColor: Colors.white,
-            disabledBackgroundColor: AppColors.accent.withOpacity(0.5),
+            disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.5),
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),

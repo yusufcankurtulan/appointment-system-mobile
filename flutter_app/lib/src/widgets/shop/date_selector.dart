@@ -68,12 +68,12 @@ class _DateChip extends StatelessWidget {
         width: 64,
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.accent.withOpacity(0.18)
+              ? AppColors.accent.withValues(alpha: 0.18)
               : AppColors.cardFill,
           borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
           border: Border.all(
             color: isSelected
-                ? AppColors.accent.withOpacity(0.55)
+                ? AppColors.accent.withValues(alpha: 0.55)
                 : AppColors.cardStroke,
             width: isSelected ? 1.5 : 1,
           ),
@@ -84,7 +84,9 @@ class _DateChip extends StatelessWidget {
             Text(
               dayName,
               style: TextStyle(
-                color: isSelected ? AppColors.accentLight : AppColors.textSecondary,
+                color: isSelected
+                    ? AppColors.accentLight
+                    : AppColors.textSecondary,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),

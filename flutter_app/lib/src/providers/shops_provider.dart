@@ -4,7 +4,8 @@ import '../repositories/shops_repository.dart';
 
 final shopsRepositoryProvider = Provider((ref) => shopsRepository);
 
-final nearbyShopsProvider = FutureProvider.autoDispose.family<List<ShopModel>, Map<String, double>>((ref, coords) async {
+final nearbyShopsProvider = FutureProvider.autoDispose
+    .family<List<ShopModel>, Map<String, double>>((ref, coords) async {
   final repo = ref.read(shopsRepositoryProvider);
   final lat = coords['lat'] ?? 0.0;
   final lng = coords['lng'] ?? 0.0;

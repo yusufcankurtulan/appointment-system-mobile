@@ -24,13 +24,12 @@ class _ShopCardState extends State<ShopCard> {
   Widget build(BuildContext context) {
     final shop = widget.shop;
 
-    final imageUrl =
-        shop.images.isNotEmpty ? shop.images.first.url : null;
+    final imageUrl = shop.images.isNotEmpty ? shop.images.first.url : null;
 
     final locationText = [
       shop.district,
       shop.city,
-    ].where((e) => e != null && e!.isNotEmpty).join(", ");
+    ].where((e) => e != null && e.isNotEmpty).join(", ");
 
     return AnimatedScale(
       duration: const Duration(milliseconds: 120),
@@ -47,10 +46,10 @@ class _ShopCardState extends State<ShopCard> {
             vertical: 8,
           ),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.04),
+            color: Colors.white.withValues(alpha: 0.04),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withValues(alpha: 0.08),
             ),
           ),
           child: Row(
@@ -121,7 +120,7 @@ class _ShopCardState extends State<ShopCard> {
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      Colors.black.withOpacity(0.45),
+                      Colors.black.withValues(alpha: 0.45),
                       Colors.transparent,
                     ],
                   ),
@@ -149,19 +148,17 @@ class _ShopCardState extends State<ShopCard> {
             ),
           ),
         ),
-
         const SizedBox(width: 8),
-
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 5,
           ),
           decoration: BoxDecoration(
-            color: Colors.green.withOpacity(0.15),
+            color: Colors.green.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Colors.green.withOpacity(0.4),
+              color: Colors.green.withValues(alpha: 0.4),
             ),
           ),
           child: const Text(
@@ -187,7 +184,7 @@ class _ShopCardState extends State<ShopCard> {
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        color: Colors.white.withOpacity(0.65),
+        color: Colors.white.withValues(alpha: 0.65),
         height: 1.4,
         fontSize: 13,
       ),
@@ -208,10 +205,10 @@ class _ShopCardState extends State<ShopCard> {
                 vertical: 6,
               ),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.04),
+                color: Colors.white.withValues(alpha: 0.04),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.08),
+                  color: Colors.white.withValues(alpha: 0.08),
                 ),
               ),
               child: Row(
@@ -237,9 +234,7 @@ class _ShopCardState extends State<ShopCard> {
               ),
             ),
           ),
-
         const Spacer(),
-
         if (shop.distanceKm != null)
           Container(
             padding: const EdgeInsets.symmetric(
@@ -247,10 +242,10 @@ class _ShopCardState extends State<ShopCard> {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: const Color(0xFF3B82F6).withOpacity(0.15),
+              color: const Color(0xFF3B82F6).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: const Color(0xFF3B82F6).withOpacity(0.4),
+                color: const Color(0xFF3B82F6).withValues(alpha: 0.4),
               ),
             ),
             child: Row(

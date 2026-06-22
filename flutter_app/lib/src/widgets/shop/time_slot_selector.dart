@@ -43,12 +43,12 @@ class TimeSlotSelector extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppColors.accent.withOpacity(0.18)
+                  ? AppColors.accent.withValues(alpha: 0.18)
                   : AppColors.cardFill,
               borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
               border: Border.all(
                 color: isSelected
-                    ? AppColors.accent.withOpacity(0.55)
+                    ? AppColors.accent.withValues(alpha: 0.55)
                     : AppColors.cardStroke,
                 width: isSelected ? 1.5 : 1,
               ),

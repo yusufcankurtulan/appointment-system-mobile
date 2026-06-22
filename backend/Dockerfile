@@ -1,7 +1,7 @@
 FROM node:20-bullseye
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci --silent || npm i --silent
+RUN npm ci --production=false --silent || npm i --production=false --silent
 COPY . .
 # generate Prisma client for the container platform and then build
 RUN npx prisma generate

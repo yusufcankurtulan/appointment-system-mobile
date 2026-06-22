@@ -5,7 +5,8 @@ class SecureStorage {
   static const _refreshKey = 'refresh_token';
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  Future<void> saveTokens({required String access, required String refresh}) async {
+  Future<void> saveTokens(
+      {required String access, required String refresh}) async {
     await _storage.write(key: _accessKey, value: access);
     await _storage.write(key: _refreshKey, value: refresh);
   }

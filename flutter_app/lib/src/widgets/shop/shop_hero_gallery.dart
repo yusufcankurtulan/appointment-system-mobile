@@ -95,7 +95,7 @@ class _ShopHeroGalleryState extends State<ShopHeroGallery> {
                     decoration: BoxDecoration(
                       color: _currentPage == index
                           ? AppColors.accent
-                          : Colors.white.withOpacity(0.35),
+                          : Colors.white.withValues(alpha: 0.35),
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
@@ -155,9 +155,9 @@ class _HeroGradientOverlay extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.black.withOpacity(0.35),
+            Colors.black.withValues(alpha: 0.35),
             Colors.transparent,
-            AppColors.background.withOpacity(0.85),
+            AppColors.background.withValues(alpha: 0.85),
           ],
           stops: const [0, 0.45, 1],
         ),
@@ -182,9 +182,9 @@ class _HeroIconButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.35),
+          color: Colors.black.withValues(alpha: 0.35),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white.withOpacity(0.12)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
         ),
         child: Icon(icon, color: Colors.white, size: 22),
       ),

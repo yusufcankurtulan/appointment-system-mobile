@@ -19,7 +19,7 @@ class PremiumBackground extends StatelessWidget {
             height: 250,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.accent.withOpacity(0.18),
+              color: AppColors.accent.withValues(alpha: 0.18),
             ),
           ),
         ),
@@ -31,7 +31,7 @@ class PremiumBackground extends StatelessWidget {
             height: 220,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.secondaryAccent.withOpacity(0.16),
+              color: AppColors.secondaryAccent.withValues(alpha: 0.16),
             ),
           ),
         ),

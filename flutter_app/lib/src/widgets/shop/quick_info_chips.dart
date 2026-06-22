@@ -59,10 +59,10 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: accent ? color.withOpacity(0.15) : AppColors.cardFill,
+        color: accent ? color.withValues(alpha: 0.15) : AppColors.cardFill,
         borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
         border: Border.all(
-          color: accent ? color.withOpacity(0.4) : AppColors.cardStroke,
+          color: accent ? color.withValues(alpha: 0.4) : AppColors.cardStroke,
         ),
       ),
       child: Row(
