@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.barber_app_flutter"
     compileSdk = 36
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "26.3.11579264"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

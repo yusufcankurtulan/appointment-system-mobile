@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'chair.dart';
 
 class ShopImageModel {
   final String id;
@@ -23,8 +24,9 @@ class ShopModel {
   final String? address;
   final double? distanceKm;
   final List<ShopImageModel> images;
+  final List<ChairModel> chairs;
 
-  ShopModel({required this.id, required this.name, this.description, this.city, this.district, this.address, this.distanceKm, required this.images});
+  ShopModel({required this.id, required this.name, this.description, this.city, this.district, this.address, this.distanceKm, required this.images, required this.chairs,});
 
   factory ShopModel.fromJson(Map<String, dynamic> json) => ShopModel(
         id: json['id']?.toString() ?? '',
@@ -35,6 +37,9 @@ class ShopModel {
         address: json['address'] as String?,
         distanceKm: json['distanceKm'] != null ? (json['distanceKm'] as num).toDouble() : null,
         images: (json['images'] as List<dynamic>?)?.map((e) => ShopImageModel.fromJson(e as Map<String, dynamic>)).toList() ?? [],
+        chairs: (json['chairs'] as List<dynamic>?)
+        ?.map((e) => ChairModel.fromJson(e))
+        .toList() ?? [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +51,7 @@ class ShopModel {
         'address': address,
         'distanceKm': distanceKm,
         'images': images.map((i) => {'id': i.id, 'url': i.url, 'alt': i.alt}).toList(),
+        'chairs': chairs.map((e) => e.toJson()).toList(),
       };
 
   @override

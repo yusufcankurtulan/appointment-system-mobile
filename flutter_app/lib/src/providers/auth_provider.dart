@@ -27,10 +27,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> register(String firstName, String lastName, String email, String phone, String password) async {
+  Future<void> register({
+    required String role,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String password,
+    String? shopName,
+    String? shopDescription,
+    String? city,
+    String? district,
+    String? address,
+  }) async {
     state = state.copyWith(loading: true);
     try {
-      final data = await _repo.registerCustomer(firstName, lastName, email, phone, password);
+      final data = await _repo.register(role: role, firstName: firstName, lastName: lastName, email: email, phone: phone, password: password, shopName: shopName, shopDescription: shopDescription, city: city, district: district, address: address);
       final user = UserModel.fromJson(data['user']);
       state = state.copyWith(user: user, loading: false);
     } catch (e) {
@@ -38,6 +50,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       rethrow;
     }
   }
+
 
   Future<void> logout() async {
     await _repo.logout();
