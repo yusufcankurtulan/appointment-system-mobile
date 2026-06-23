@@ -83,27 +83,81 @@ export async function registerOwner(req: Request, res: Response) {
 export async function loginCustomer(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ message: 'Missing fields' });
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-    if (user.disabled) return res.status(403).json({ message: 'Account disabled' });
-    if (!user || user.role !== 'CUSTOMER') return res.status(401).json({ message: 'Invalid credentials' });
+    console.log('[LOGIN CUSTOMER]', email);
 
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!email || !password) {
+      return res.status(400).json({
+        message: 'Missing fields',
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    console.log('[USER FOUND]', user);
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'User not found',
+      });
+    }
+
+    if (user.disabled) {
+      return res.status(403).json({
+        message: 'Account disabled',
+      });
+    }
+
+    if (user.role !== 'CUSTOMER') {
+      return res.status(401).json({
+        message: 'This account is not a customer account',
+      });
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      password,
+      user.password,
+    );
+
+    console.log('[PASSWORD MATCH]', passwordMatch);
+
+    if (!passwordMatch) {
+      return res.status(401).json({
+        message: 'Wrong password',
+      });
+    }
 
     const accessToken = signAccessToken(user);
     const refreshToken = signRefreshToken(user);
 
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
-    await prisma.refreshToken.create({ data: { userId: user.id, token: refreshToken, expiresAt } });
 
-    res.json({ accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.role } });
+    await prisma.refreshToken.create({
+      data: {
+        userId: user.id,
+        token: refreshToken,
+        expiresAt,
+      },
+    });
+
+    return res.json({
+      accessToken,
+      refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    console.error('[LOGIN CUSTOMER ERROR]', err);
+
+    return res.status(500).json({
+      message: 'Server error',
+    });
   }
 }
 

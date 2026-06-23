@@ -7,97 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  CUSTOMER
-  OWNER
-  ADMIN
-}
-
-enum OwnerStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  disabled  Boolean  @default(false)
-  role      Role
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  customer  Customer?
-  owner     Owner?
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  disabled      Boolean        @default(false)
+  role          Role
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  customer      Customer?
+  deviceTokens  DeviceToken[]
+  owner         Owner?
   refreshTokens RefreshToken[]
-  deviceTokens DeviceToken[]
 }
 
 model Customer {
-  userId    String  @id
-  firstName String
-  lastName  String
-  phone     String
-  user      User    @relation(fields: [userId], references: [id])
+  userId       String        @id
+  firstName    String
+  lastName     String
+  phone        String
   appointments Appointment[]
+  user         User          @relation(fields: [userId], references: [id])
 }
 
 model Owner {
-  userId         String    @id
-  fullName       String
-  phone          String
-  shop           Shop?
-  status         OwnerStatus @default(PENDING)
-  user           User      @relation(fields: [userId], references: [id])
+  userId   String      @id
+  fullName String
+  phone    String
+  status   OwnerStatus @default(PENDING)
+  user     User        @relation(fields: [userId], references: [id])
+  shop     Shop?
 }
 
 model Shop {
-  id          String    @id @default(uuid())
-  name        String
-  description String?
-  city        String
-  district    String?
-  address     String
-  latitude    Float?
-  longitude   Float?
-  chairs      Chair[]
-  images      ShopImage[]
-  owner       Owner     @relation(fields: [ownerId], references: [userId])
-  ownerId     String    @unique
+  id           String        @id @default(uuid())
+  name         String
+  description  String?
+  city         String
+  district     String?
+  address      String
+  latitude     Float?
+  longitude    Float?
+  ownerId      String        @unique
   appointments Appointment[]
+  chairs       Chair[]
+  owner        Owner         @relation(fields: [ownerId], references: [userId])
+  images       ShopImage[]
 }
 
 model ShopImage {
-  id     String @id @default(uuid())
+  id     String  @id @default(uuid())
   shopId String
   url    String
   alt    String?
-  shop   Shop   @relation(fields: [shopId], references: [id])
+  shop   Shop    @relation(fields: [shopId], references: [id])
 }
 
 model Chair {
-  id        String @id @default(uuid())
-  shopId    String
-  name      String
-  bio       String?
-  shop      Shop   @relation(fields: [shopId], references: [id])
+  id           String        @id @default(uuid())
+  shopId       String
+  name         String
+  bio          String?
   appointments Appointment[]
+  shop         Shop          @relation(fields: [shopId], references: [id])
 }
 
 model Appointment {
-  id          String   @id @default(uuid())
-  customerId  String
-  chairId     String
-  shopId      String
-  startAt     DateTime
-  endAt       DateTime
-  status      String   @default("PENDING")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  customer    Customer @relation(fields: [customerId], references: [userId])
-  chair       Chair    @relation(fields: [chairId], references: [id])
-  shop        Shop     @relation(fields: [shopId], references: [id])
+  id         String   @id @default(uuid())
+  customerId String
+  chairId    String
+  shopId     String
+  startAt    DateTime
+  endAt      DateTime
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  chair      Chair    @relation(fields: [chairId], references: [id])
+  customer   Customer @relation(fields: [customerId], references: [userId])
+  shop       Shop     @relation(fields: [shopId], references: [id])
 }
 
 model Notification {
@@ -128,3 +115,14 @@ model DeviceToken {
   user      User     @relation(fields: [userId], references: [id])
 }
 
+enum Role {
+  CUSTOMER
+  OWNER
+  ADMIN
+}
+
+enum OwnerStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
